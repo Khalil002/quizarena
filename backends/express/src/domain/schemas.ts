@@ -20,7 +20,7 @@ export const newQuizSchema = z.object({
 
 export type QuestionInput = z.infer<typeof questionSchema>;
 
-export const newRoomSchema = z.object({ quizId: z.string().uuid() });
+export const newRoomSchema = z.object({ quizId: z.guid() });
 
 export const answerSchema = z.object({
   questionIndex: z.number().int().min(0),
