@@ -1,0 +1,75 @@
+:root {
+  --bg: #120f24;
+  --panel: #1d1937;
+  --line: #2f2a52;
+  --text: #f1eefe;
+  --muted: #a39fc4;
+  --accent: #8b5cf6;
+  --a: #ef4444;
+  --b: #3b82f6;
+  --c: #f59e0b;
+  --d: #10b981;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(circle at top, #231c4a, var(--bg) 60%); color: var(--text); min-height: 100vh; }
+main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 64px; display: grid; gap: 20px; }
+h2 { margin: 0 0 12px; font-size: 1.05rem; }
+code { background: #0004; padding: 1px 5px; border-radius: 4px; }
+.hidden { display: none !important; }
+.muted { color: var(--muted); }
+.small { font-size: .8rem; font-weight: 400; }
+
+.top { display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--line); }
+.brand { font-weight: 800; font-size: 1.4rem; color: var(--text); text-decoration: none; }
+.brand span { color: var(--accent); }
+.pill { font-size: .75rem; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); }
+.session { margin-left: auto; display: flex; gap: 12px; align-items: center; }
+
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.narrow { max-width: 460px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+form { display: grid; gap: 10px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+input, select { background: #0f0c1f; color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: inherit; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 10px 14px; font: inherit; font-weight: 600; cursor: pointer; }
+button.ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.code-input { text-transform: uppercase; letter-spacing: .3em; font-weight: 700; width: 11em; }
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.list li { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+ol.list { counter-reset: lb; }
+ol.list li::before { counter-increment: lb; content: counter(lb); color: var(--muted); width: 1.5em; }
+ol.list li span:first-of-type { flex: 1; }
+
+.question-field { border: 1px dashed var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 8px; }
+
+/* Room */
+.stage { display: grid; gap: 20px; }
+.stage-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.room-code { font-size: 2.6rem; font-weight: 800; letter-spacing: .25em; color: var(--accent); }
+.prompt { font-size: 1.6rem; font-weight: 700; text-align: center; margin: 8px 0; }
+.timer { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.timer > div { height: 100%; background: var(--accent); transition: width .25s linear; }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.option { font-size: 1.15rem; padding: 26px 16px; border-radius: 12px; text-align: left; }
+.option:nth-child(1) { background: var(--a); }
+.option:nth-child(2) { background: var(--b); }
+.option:nth-child(3) { background: var(--c); }
+.option:nth-child(4) { background: var(--d); }
+.option:disabled { opacity: 1; cursor: default; }
+.option.dim { opacity: .3; }
+.option.correct { outline: 4px solid #fff; }
+.option.picked { outline: 4px dashed #fff; }
+.scores li .score { font-variant-numeric: tabular-nums; font-weight: 700; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0004; font-size: .8rem; }
+
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 8px; }
+
+@media (max-width: 720px) {
+  .grid2, .options { grid-template-columns: 1fr; }
+  .top { padding: 12px 16px; flex-wrap: wrap; }
+  .room-code { font-size: 2rem; }
+}

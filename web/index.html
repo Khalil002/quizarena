@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>quizarena</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#" id="home-link">quiz<span>arena</span></a>
+    <div id="backend" class="pill">backend: …</div>
+    <div id="session" class="session"></div>
+  </header>
+
+  <main id="app">
+    <section id="auth-view" class="card narrow">
+      <h2>Play live quizzes with friends</h2>
+      <p class="muted">Demo host login: <code>admin@quizarena.local</code> / <code>admin1234</code></p>
+      <form id="auth-form">
+        <input name="email" type="email" placeholder="email" required autocomplete="username" />
+        <input name="password" type="password" placeholder="password (8+ chars)" required minlength="8" autocomplete="current-password" />
+        <input name="displayName" placeholder="display name (to register)" maxlength="24" />
+        <div class="row">
+          <button type="submit" data-mode="login">Log in</button>
+          <button type="submit" data-mode="register" class="ghost">Create account</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="home-view" class="hidden">
+      <div class="grid2">
+        <div class="card">
+          <h2>Join a game</h2>
+          <form id="join-form" class="row">
+            <input name="code" placeholder="ROOM CODE" maxlength="6" class="code-input" required />
+            <button type="submit">Join</button>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Leaderboard <span id="lb-cache" class="muted small"></span></h2>
+          <ol id="leaderboard" class="list"></ol>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Host a quiz</h2>
+        <ul id="quizzes" class="list"></ul>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Build a quiz</h2>
+          <form id="quiz-form">
+            <input name="title" placeholder="quiz title" required maxlength="120" />
+            <div id="question-fields"></div>
+            <div class="row">
+              <button type="button" class="ghost" id="add-question">+ Question</button>
+              <button type="submit">Save quiz</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Your matches</h2>
+          <ul id="history" class="list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="room-view" class="hidden"></section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
