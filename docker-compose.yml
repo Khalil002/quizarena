@@ -1,0 +1,77 @@
+# One-command deploy:   docker compose up --build
+# Pick a backend:       BACKEND=express docker compose up --build   (spring | express | dotnet)
+# Scale it out:         docker compose up --build --scale api=3
+name: quizarena
+
+x-db-env: &db-env
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_NAME: ${DB_NAME:-quizarena}
+  DB_USER: ${DB_USER:-quizarena}
+  DB_PASSWORD: ${DB_PASSWORD:-quizarena}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-quizarena}
+      POSTGRES_USER: ${DB_USER:-quizarena}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-quizarena}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # Applies db/migrations once; every backend runs against the result.
+  migrate:
+    image: flyway/flyway:10-alpine
+    command: -url=jdbc:postgresql://postgres:5432/${DB_NAME:-quizarena} -user=${DB_USER:-quizarena} -password=${DB_PASSWORD:-quizarena} -locations=filesystem:/flyway/sql -connectRetries=20 migrate
+    volumes:
+      - ./db/migrations:/flyway/sql:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build: ./backends/${BACKEND:-spring}
+    environment:
+      <<: *db-env
+      PORT: "8000"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-a-long-random-secret-of-32-bytes}
+      ROOM_TTL_SEC: ${ROOM_TTL_SEC:-21600}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-10}
+      RATE_LIMIT_WINDOW_SEC: ${RATE_LIMIT_WINDOW_SEC:-60}
+      CACHE_TTL_SEC: ${CACHE_TTL_SEC:-5}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Static UI + reverse proxy. /api/* (including WebSockets) is balanced across api replicas.
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

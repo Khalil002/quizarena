@@ -1,0 +1,7 @@
+# Infra only, with ports on localhost, for running a backend straight from source:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d postgres redis migrate
+services:
+  postgres:
+    ports: ["5432:5432"]
+  redis:
+    ports: ["6379:6379"]
