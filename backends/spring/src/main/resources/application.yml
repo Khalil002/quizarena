@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8000}
+  shutdown: graceful
+
+spring:
+  application:
+    name: quizarena-spring
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:quizarena}
+    username: ${DB_USER:quizarena}
+    password: ${DB_PASSWORD:quizarena}
+    hikari:
+      maximum-pool-size: 20
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+app:
+  jwt-secret: ${JWT_SECRET:change-me-to-a-long-random-secret-of-32-bytes}
+  jwt-ttl-sec: ${JWT_TTL_SEC:3600}
+  room-ttl-sec: ${ROOM_TTL_SEC:21600}
+  rate-limit-max: ${RATE_LIMIT_MAX:10}
+  rate-limit-window-sec: ${RATE_LIMIT_WINDOW_SEC:60}
+  cache-ttl-sec: ${CACHE_TTL_SEC:5}
+  archive-interval-ms: ${ARCHIVE_INTERVAL_MS:1000}
+  consumer-name: ${HOSTNAME:local}
