@@ -6,6 +6,20 @@ The same API and WebSocket protocol are implemented three times, in **Spring Boo
 
 ![CI](https://github.com/Khalil002/quizarena/actions/workflows/ci.yml/badge.svg)
 
+## Contents
+
+- [Introduction](#introduction)
+- [Interface](#interface)
+- [Architecture](#architecture)
+- [Modular backend](#modular-backend)
+- [Usage](#usage)
+  - [Quick start](#quick-start)
+  - [Self-hosting guide](#self-hosting-guide)
+  - [Configuration](#configuration)
+  - [Running a backend from source](#running-a-backend-from-source)
+- [Testing](#testing)
+- [Project layout](#project-layout)
+
 ## Introduction
 
 Real-time games are a good test of backend design: state changes many times a second, every player has to see the same thing, and the server, not the client, has to decide who was fastest. quizarena covers the whole loop:
